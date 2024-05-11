@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Safe Keep</string>
+    <string name="login">Login</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="logout">Logout</string>
+    <string name="already_have_a_user">Already have a user?</string>
+    <string name="Dont_have_a_user_yet">Don\'t have a user yet?</string>
+    <string name="forgot_your_password">forgot your password?</string>
+</resources>
