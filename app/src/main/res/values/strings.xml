@@ -12,4 +12,7 @@
     <string name="already_have_a_user">Already have a user?</string>
     <string name="Dont_have_a_user_yet">Don\'t have a user yet?</string>
     <string name="forgot_your_password">forgot your password?</string>
+    <string name="enter_your_email_address">enter your email address</string>
+    <string name="cancel">cancel</string>
+    <string name="reset">reset</string>
 </resources>
