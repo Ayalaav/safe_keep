@@ -17,14 +17,14 @@
 
 
         <Button
-            android:layout_width="10dp"
+            android:layout_width="8dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
             android:onClick="previousMonthAction"
             android:text="@string/Back"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -38,14 +38,14 @@
             android:textSize="20sp" />
 
         <Button
-            android:layout_width="10dp"
+            android:layout_width="8dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
             android:onClick="nextMonthAction"
             android:text="@string/Forward"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -130,20 +130,37 @@
 
     <Button
         android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="5dp"
-        android:text="@string/logout" />
+        android:background="@drawable/button_background"
+        android:gravity="center"
+        android:text="@string/logout"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="310dp" />
 
     <Button
         android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button_background"
+        android:gravity="center"
         android:text="הוספת דייט חדש!"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="310dp" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -152,7 +169,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/bottom_background"
