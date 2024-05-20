@@ -9,22 +9,35 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * The MainActivity class represents the main screen of the application.
+ * It displays a calendar view and handles user authentication.
+ */
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
+    // Firebase authentication instance
     private FirebaseAuth auth;
+
+    // UI elements
     private TextView textView;
     private FirebaseUser user;
     private Button buttonLogout;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+    private Map<Integer, Class<?>> activityMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +76,28 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         });
+
+        // Initialize the activityMap with menu item IDs and activity classes
+        activityMap.put(R.id.bottom_home, MainActivity.class);
+        activityMap.put(R.id.bottom_search, SearchActivity.class);
+        activityMap.put(R.id.bottom_settings, SettingsActivity.class);
+        activityMap.put(R.id.bottom_profile, ProfileActivity.class);
+
+        // Bottom navigation setup
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Class<?> activityClass = activityMap.get(item.getItemId());
+            if (activityClass != null) {
+                startActivity(new Intent(getApplicationContext(), activityClass));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            }
+            return false;
+        });
+
     }
 
     // Initialize RecyclerView and TextView
