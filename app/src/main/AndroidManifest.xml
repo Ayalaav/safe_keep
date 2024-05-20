@@ -64,6 +64,8 @@
             android:name="com.safe_keep.app.SettingsActivity"
             android:exported="true">
         </activity>
+
+
     </application>
 
 </manifest>

@@ -17,4 +17,10 @@
     <string name="reset">Reset</string>
     <string name="Forward">Forward</string>
     <string name="Back">Back</string>
+    <string name="date">הוספת דייט</string>
+    <string name="title">הוסיפי כותרת</string>
+    <string name="alerts">התראות</string>
+    <string name="my_keepers_on_date">השומרים שלי בדייט הזה</string>
+    <string name="keepers">השומרים שלי</string>
+    <string name="settings">settings</string>
 </resources>
