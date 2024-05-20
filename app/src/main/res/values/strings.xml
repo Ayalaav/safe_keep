@@ -6,13 +6,15 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
-    <string name="click_to_login">Click to login</string>
-    <string name="click_to_register">Click to register</string>
-    <string name="logout">Logout</string>
-    <string name="already_have_a_user">Already have a user?</string>
-    <string name="Dont_have_a_user_yet">Don\'t have a user yet?</string>
-    <string name="forgot_your_password">forgot your password?</string>
-    <string name="enter_your_email_address">enter your email address</string>
-    <string name="cancel">cancel</string>
-    <string name="reset">reset</string>
+    <string name="click_to_login">Click To Login</string>
+    <string name="click_to_register">Click To Register</string>
+    <string name="logout">Log Out</string>
+    <string name="already_have_a_user">Already Have A User?</string>
+    <string name="Dont_have_a_user_yet">Don\'t Have A User Yet?</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
+    <string name="enter_your_email_address">Enter Your Email Address</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="Forward">Forward</string>
+    <string name="Back">Back</string>
 </resources>
