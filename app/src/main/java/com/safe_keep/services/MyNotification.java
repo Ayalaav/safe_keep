@@ -10,6 +10,7 @@ import android.graphics.Color;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.safe_keep.app.MapsActivity;
 import com.safe_keep.app.R;
 
 public class MyNotification
