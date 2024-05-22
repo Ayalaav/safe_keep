@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_fake_call_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A fake call is a pre-scheduled call that can provide you with an excuse to leave an uncomfortable situation, and will let your keepers know that you are in danger through key-words recognition, if necessary. You can set up a fake call to occur at a specific time, helping you to safely exit from any scenario where you might feel unsafe."
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_schedule_fake_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I want to schedule a fake call"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_maybe_later"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maybe next time"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
+</LinearLayout>

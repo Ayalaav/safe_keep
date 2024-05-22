@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Do you want to schedule a fake call?"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yes"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:onClick="onYesClick"/>
+
+    <Button
+        android:id="@+id/btn_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:onClick="onNoClick"/>
+
+    <TextView
+        android:id="@+id/tv_what_is_fake_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is Fake Call?"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <TextView
+        android:id="@+id/tv_fake_call_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A fake call is a pre-scheduled call that can provide you with an excuse to leave an uncomfortable situation. You can set up a fake call to occur at a specific time, helping you to safely exit from any scenario where you might feel unsafe."
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+</LinearLayout>
