@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private LocalDate selectedDate;
     private Map<Integer, Class<?>> activityMap = new HashMap<>();
     private TextView dateView;
+    private Button buttonTemp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,15 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         textView = findViewById(R.id.monthYearTV);
         buttonLogout = findViewById(R.id.logout);
         dateView = findViewById(R.id.date);
+        buttonTemp = findViewById(R.id.TempActivity);
+
 
         // Check if a user is already logged in
         user = auth.getCurrentUser();
         if (user == null) {
             // If no user is logged in, redirect to the login activity
+
+
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         } else {
@@ -81,6 +87,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             // Redirect to the login activity
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
+        });
+
+        buttonTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TempActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Initialize the activityMap with menu item IDs and activity classes

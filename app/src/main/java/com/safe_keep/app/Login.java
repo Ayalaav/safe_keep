@@ -23,23 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     private TextInputEditText editTextEmail, editTextPassword;
-    private Button buttonLogin;
+    private Button buttonLogin, nextDebug;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
-    private TextView textView;
-    private TextView forgotPassword;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            // Redirect user to MainActivity if already logged in
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
-    }
+    private TextView textView, forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,81 +44,104 @@ public class Login extends AppCompatActivity {
         textView = findViewById(R.id.registerNow);
         forgotPassword = findViewById(R.id.forgotPassword);
 
+        // Check if user is already logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            redirectToMain();
+        }
+
         // Set click listener for Register Now text
-        textView.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), Register.class);
-            startActivity(intent);
+        textView.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Register.class));
             finish();
         });
 
         // Set click listener for Login button
-        buttonLogin.setOnClickListener(view -> {
-            progressBar.setVisibility(View.VISIBLE);
-            String email = editTextEmail.getText().toString();
-            String password = editTextPassword.getText().toString();
+        buttonLogin.setOnClickListener(v -> loginUser());
 
-            // Validate email and password
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
-                return;
-            }
-
-            if (TextUtils.isEmpty(password)) {
-                Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
-                return;
-            }
-
-            // Sign in user with email and password
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        progressBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        });
+        // Set click listener for Debug button (only available in one version)
+        if (nextDebug != null) {
+            nextDebug.setOnClickListener(v -> redirectToMain());
+        }
 
         // Set click listener for Forgot Password text
-        forgotPassword.setOnClickListener(view -> {
-            // Create a dialog for password reset
-            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
-            EditText emailBox = dialogView.findViewById(R.id.emailBox);
-            builder.setView(dialogView);
-            AlertDialog dialog = builder.create();
+        forgotPassword.setOnClickListener(v -> showForgotPasswordDialog());
+    }
 
-            // Set click listeners for Reset and Cancel buttons
-            dialogView.findViewById(R.id.btnReset).setOnClickListener(view1 -> {
-                String userEmail = emailBox.getText().toString();
-                if (TextUtils.isEmpty(userEmail) || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-                    Toast.makeText(Login.this, "Enter your registered email id", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                // Send password reset email
-                mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(task -> {
+    // Method to redirect to MainActivity
+    private void redirectToMain() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
+    }
+
+    // Method to handle user login
+    private void loginUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+        // Validate email and password
+        if (TextUtils.isEmpty(email)) {
+            showError("Enter email");
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            showError("Enter password");
+            return;
+        }
+
+        // Sign in user with email and password
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        Toast.makeText(Login.this, "Check your email", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        // Sign in success, update UI with the signed-in user's information
+                        Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        redirectToMain();
                     } else {
-                        Toast.makeText(Login.this, "Unable to send, failed", Toast.LENGTH_SHORT).show();
+                        // If sign in fails, display a message to the user.
+                        showError("Authentication failed");
                     }
                 });
-            });
-            dialogView.findViewById(R.id.btnCancel).setOnClickListener(view12 -> dialog.dismiss());
+    }
 
-            // Customize dialog appearance
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+    // Method to display error message
+    private void showError(String message) {
+        Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
+    }
+
+    // Method to show forgot password dialog
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
+        EditText emailBox = dialogView.findViewById(R.id.emailBox);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        dialogView.findViewById(R.id.btnReset).setOnClickListener(v -> {
+            String userEmail = emailBox.getText().toString();
+            if (TextUtils.isEmpty(userEmail) || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+                showError("Enter your registered email id");
+                return;
             }
-            dialog.show();
+            // Send password reset email
+            mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Login.this, "Check your email", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    showError("Unable to send, failed");
+                }
+            });
         });
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        dialog.show();
     }
 }
