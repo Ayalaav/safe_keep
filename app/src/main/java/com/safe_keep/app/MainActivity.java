@@ -1,8 +1,10 @@
 package com.safe_keep.app;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -21,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.safe_keep.services.MessageService;
+import com.safe_keep.services.MyNotification;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -74,6 +78,25 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             textView.setText(user.getEmail());
         }
 
+        try {
+            // Asks user for permission to send notifications, read contacts, location
+            // for now we can assume that the user grants permission for everything
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            {requestPermissions(new String[] {android.Manifest.permission.POST_NOTIFICATIONS,
+                    android.Manifest.permission.READ_CONTACTS,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            }, 101);
+            }
+
+            // Add user_list
+            MyNotification notification = new MyNotification(user, getApplicationContext(), new String[] {"netane54544@gmail.com"});
+        } catch (Exception e) {
+            // Does nothing
+        }
+
         // Initialize widgets and set initial month view
         initWidgets();
         selectedDate = LocalDate.now();
@@ -123,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             // Display new_date.xml layout as a dialog
             showNewDateDialog();
         });
+
+        startService(new Intent(this, MessageService.class));
     }
 
     // Display new_date.xml layout as a dialog

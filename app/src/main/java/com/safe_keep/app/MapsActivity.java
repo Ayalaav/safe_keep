@@ -1,14 +1,24 @@
 package com.safe_keep.app;
 
-import androidx.fragment.app.FragmentActivity;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.InputType;
 import android.widget.EditText;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,57 +26,110 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.safe_keep.app.databinding.ActivityMapsBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.safe_keep.services.LocationUpdateService;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
+{
 
     private GoogleMap mMap;
-    private ActivityMapsBinding binding;
+    private LatLng geofenceCenter;
+    private float geofenceRadius;
+    private LocationCallback locationCallback;
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
+
+    private void createLocationRequest()
+    {
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000); // 10 seconds
+        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void createLocationCallback()
+    {
+        locationCallback = new LocationCallback() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    // Update the map center based on user location
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 18));
+                }
+            }
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        createLocationRequest();
+        createLocationCallback();
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng telAviv = new LatLng(32, 34);
-        mMap.addMarker(new MarkerOptions().position(telAviv).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(telAviv));
+        // Move the map to the updated location
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null)
+                        {
+                            LatLng gLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(gLocation, 18));
+                            mMap.addMarker(new MarkerOptions().position(gLocation).title("Your position"));
+                        }
+                    }
+                });
 
-
-        // Set a long click listener on the map
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                // Show a dialog to input the radius TODO:DRAGABLE RADIUS
                 showRadiusInputDialog(latLng);
             }
         });
     }
 
+    private void startLocationUpdateService()
+    {
+        Intent serviceIntent = new Intent(this, LocationUpdateService.class);
+        serviceIntent.putExtra("geofenceCenter", geofenceCenter);
+        serviceIntent.putExtra("geofenceRadius", geofenceRadius);
+
+        ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
+    }
+
     private void showRadiusInputDialog(final LatLng latLng) {
-        // Create an AlertDialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Radius");
 
-        // Set up the input
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(input);
 
-        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -74,6 +137,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (!radiusStr.isEmpty()) {
                     double radius = Double.parseDouble(radiusStr);
                     drawCircle(latLng, radius);
+                    addGeofence(latLng, radius);
+                    startLocationUpdateService();
                 }
             }
         });
@@ -87,18 +152,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.show();
     }
 
-    private void drawCircle(LatLng latLng, double radius) {
-        // Add a circle to the map
-        double radiusInKM = radius * 1000;// change radius from meters to KM
-        CircleOptions circleOptions = new CircleOptions()
-                .center(latLng)
-                .radius(radiusInKM)
-                .strokeColor(Color.BLUE)
-                .fillColor(0x30ff0000) // 30% transparency
-                .strokeWidth(2);
-        mMap.addCircle(circleOptions);
+    private void addGeofence(LatLng latLng, double radius) {
+        geofenceCenter = latLng;
+        geofenceRadius = (float) radius;
+    }
 
-        // Move the camera to the circle
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        // Start requesting location updates
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        // Stop requesting location updates
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+    private void drawCircle(final LatLng latLng, final double radius) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                final CircleOptions circleOptions = new CircleOptions()
+                        .center(latLng)
+                        .radius(radius)
+                        .strokeColor(Color.BLUE)
+                        .fillColor(0x30ff0000)
+                        .strokeWidth(2);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.addCircle(circleOptions);
+                    }
+                });
+            }
+        });
     }
 }
