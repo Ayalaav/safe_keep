@@ -10,6 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
@@ -125,7 +126,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="520dp" />
+        android:layout_height="144dp" />
+
 
 
     <Button
@@ -162,6 +164,23 @@
         tools:layout_editor_absoluteX="12dp"
         tools:layout_editor_absoluteY="310dp" />
 
+    <Button
+        android:id="@+id/TempActivity"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button_background"
+        android:gravity="center"
+        android:text="@string/temp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="310dp" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
@@ -181,15 +200,3 @@
         app:menu="@menu/bottom_menu" />
 
 </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
