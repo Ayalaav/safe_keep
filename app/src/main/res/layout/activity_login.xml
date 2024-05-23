@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/color"
+    android:background="@drawable/back1"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
@@ -16,14 +16,14 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="@string/sign_in"
-        android:textColor="@color/white"
+        android:textColor="@color/lavender"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/white">
+        android:textColorHint="@color/lavender">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"

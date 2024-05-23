@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/color"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/caller_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tali"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/incoming_call_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Incoming Call"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/caller_name"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/call_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:id="@+id/accept_call_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/income"
+            android:contentDescription="Accept Call"
+            android:layout_marginRight="40dp"
+            android:onClick="onAcceptCall"/>
+
+        <Button
+            android:id="@+id/decline_call_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/reject"
+            android:contentDescription="Decline Call"
+            android:onClick="onDeclineCall"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -78,6 +78,22 @@
             android:name=".SettingsActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".DoYouWantFakeCall"
+            android:exported="true"/>
+        <activity
+            android:name=".ScheduleFakeCall"
+            android:exported="true"/>
+        <activity
+            android:name=".FakeCallDescriptionActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".SelectSecurityQuestionActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".LearnAnswersActivity"
+            android:exported="true"/>
+
         <receiver
             android:name=".GeofenceBroadcastReceiver"
             android:exported="true">
