@@ -38,5 +38,13 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"/>
 
+    <Button
+        android:id="@+id/get_fake_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Fake Call"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"/>
+
 
 </LinearLayout>

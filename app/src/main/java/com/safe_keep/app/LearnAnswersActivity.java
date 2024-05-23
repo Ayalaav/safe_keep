@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LearnAnswersActivity extends AppCompatActivity {
 
     private TextView tvSelectedQuestion;
-    private String selectedQuestion;
+    private String securityQuestion;
     private String answerFine;
     private String answerDanger;
 
@@ -21,29 +21,29 @@ public class LearnAnswersActivity extends AppCompatActivity {
 
         tvSelectedQuestion = findViewById(R.id.tv_selected_question);
         TextView answer1View = findViewById(R.id.answer1);
-        TextView answer1ExplanationView = findViewById(R.id.answer1_explanation);
         TextView answer2View = findViewById(R.id.answer2);
-        TextView answer2ExplanationView = findViewById(R.id.answer2_explanation);
         Button btnProceed = findViewById(R.id.btn_proceed);
 
-        // Retrieve the selected question from the previous activity
+        // Retrieve the security question from the previous activity
         Intent intent = getIntent();
         if (intent != null) {
-            selectedQuestion = intent.getStringExtra("selectedQuestion");
-            if (selectedQuestion != null) {
-                tvSelectedQuestion.setText(selectedQuestion);
-                setAnswers(selectedQuestion);
+            securityQuestion = intent.getStringExtra("securityQuestion");
+            if (securityQuestion != null) {
+                tvSelectedQuestion.setText(securityQuestion);
+                setAnswers(securityQuestion);
                 answer1View.setText("Answer 1: " + answerFine);
-                answer1ExplanationView.setText("This means everything is fine and you want to continue the date.");
                 answer2View.setText("Answer 2: " + answerDanger);
-                answer2ExplanationView.setText("This will send a notification to your keeper.");
             }
         }
 
         btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
+            // update here so it goes back to the menu
             public void onClick(View v) {
-                // Proceed to the next step or activity
+                // Navigate to FakeCallActivity
+                Intent intent = new Intent(LearnAnswersActivity.this, FakeCallActivity.class);
+                intent.putExtra("securityQuestion", securityQuestion);
+                startActivity(intent);
                 finish();
             }
         });

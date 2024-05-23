@@ -22,6 +22,7 @@ public class TempActivity extends Activity {
     Button mapButton;
     Button contactListButton;
     Button btnFakeCall; // New button for fake call
+    Button GetFakeCall;
     FirebaseUser user;
 
     @Override
@@ -35,6 +36,8 @@ public class TempActivity extends Activity {
         contactListButton = findViewById(R.id.contactListButton);
         mapButton = findViewById(R.id.mapButton);
         btnFakeCall = findViewById(R.id.btn_fake_call);
+        GetFakeCall = findViewById(R.id.get_fake_call);
+
         user = auth.getCurrentUser();
 
         // Set OnClickListener for the 'not' button
@@ -78,6 +81,15 @@ public class TempActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DoYouWantFakeCall.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        GetFakeCall.setOnClickListener(new View.OnClickListener() {
+            // Fake call button
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FakeCallActivity.class);
                 startActivity(intent);
                 finish();
             }

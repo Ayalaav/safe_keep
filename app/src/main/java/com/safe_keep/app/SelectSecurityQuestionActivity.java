@@ -27,13 +27,13 @@ public class SelectSecurityQuestionActivity extends AppCompatActivity {
                 int selectedId = rgSecurityQuestions.getCheckedRadioButtonId();
                 if (selectedId != -1) {
                     RadioButton selectedRadioButton = findViewById(selectedId);
-                    String selectedQuestion = selectedRadioButton.getText().toString();
-                    saveSelectedQuestion(selectedQuestion);
-                    Toast.makeText(SelectSecurityQuestionActivity.this, "Question Selected: " + selectedQuestion, Toast.LENGTH_SHORT).show();
+                    String securityQuestion = selectedRadioButton.getText().toString();
+                    saveSelectedQuestion(securityQuestion);
+                    Toast.makeText(SelectSecurityQuestionActivity.this, "Question Selected: " + securityQuestion, Toast.LENGTH_SHORT).show();
 
                     // Navigate to LearnAnswersActivity
                     Intent intent = new Intent(SelectSecurityQuestionActivity.this, LearnAnswersActivity.class);
-                    intent.putExtra("selectedQuestion", selectedQuestion);
+                    intent.putExtra("securityQuestion", securityQuestion);
                     startActivity(intent);
 
                 } else {

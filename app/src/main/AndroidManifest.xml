@@ -94,6 +94,16 @@
             android:name=".LearnAnswersActivity"
             android:exported="true"/>
 
+        <activity
+            android:name=".FakeCallActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".AcceptedFakeCallActivity"
+            android:exported="true" />
+
+
+
         <receiver
             android:name=".GeofenceBroadcastReceiver"
             android:exported="true">
