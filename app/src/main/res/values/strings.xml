@@ -40,4 +40,6 @@
     <string name="my_keepers_on_date">השומרים שלי בדייט הזה</string>
     <string name="keepers">השומרים שלי</string>
     <string name="temp">temp</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
 </resources>
